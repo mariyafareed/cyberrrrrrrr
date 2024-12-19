@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber Attack Dungeon</title>
+  <style>
+    /* Body and General Styling */
+    body {
+      background: linear-gradient(120deg, #1e293b, #3b82f6);
+      color: white;
+      font-family: "Arial", sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+
+    /* Game Container */
+    .game-container {
+      background: #111827;
+      border: 2px solid #3b82f6;
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Buttons */
+    .btn {
+      background-color: #3b82f6;
+      color: white;
+      padding: 10px 20px;
+      margin-top: 20px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .btn:hover {
+      background-color: #2563eb;
+    }
+
+    /* Hidden content */
+    .hidden {
+      display: none;
+    }
+
+    /* Animation for door unlock */
+    .door-animation {
+      animation: shake 0.5s;
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+
+    /* Message styling */
+    .message {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Cyber Attack Dungeon</h1>
+  <h2>Rescue the Princess!</h2>
+  
+  <div class="game-container">
+    <p id="story">You stand before a locked dungeon door. To rescue the princess, you must answer questions correctly to find the key!</p>
+    <div id="question-box" class="hidden">
+      <p id="question">What is the capital of cyber attacks?</p>
+      <input type="text" id="answer" placeholder="Enter your answer..." />
+      <button class="btn" onclick="checkAnswer()">Submit Answer</button>
+    </div>
+    <div id="message-box" class="message"></div>
+    <button id="start-btn" class="btn" onclick="startGame()">Start Game</button>
+  </div>
+
+  <script>
+    // Game Variables
+    let questions = [
+      { question: "What is the capital of cyber attacks?", answer: "malware" },
+      { question: "Which protocol is used for secure websites? (Hint: HTTPS or HTTP)", answer: "https" },
+      { question: "What tool is commonly used for penetration testing? (Hint: K____x)", answer: "kali linux" }
+    ];
+    let currentQuestion = 0;
+
+    // Start Game Function
+    function startGame() {
+      document.getElementById("start-btn").classList.add("hidden");
+      document.getElementById("question-box").classList.remove("hidden");
+      showQuestion();
+    }
+
+    // Display Current Question
+    function showQuestion() {
+      let questionElement = document.getElementById("question");
+      questionElement.textContent = questions[currentQuestion].question;
+    }
+
+    // Check Answer
+    function checkAnswer() {
+      let userAnswer = document.getElementById("answer").value.trim().toLowerCase();
+      let correctAnswer = questions[currentQuestion].answer.toLowerCase();
+      let messageBox = document.getElementById("message-box");
+
+      if (userAnswer === correctAnswer) {
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+          messageBox.textContent = "Correct! On to the next question.";
+          document.getElementById("answer").value = "";
+          showQuestion();
+        } else {
+          messageBox.textContent = "Congratulations! You found the key and rescued the princess!";
+          document.getElementById("question-box").classList.add("hidden");
+        }
+      } else {
+        messageBox.textContent = "Incorrect! Try again.";
+        shakeDoor();
+      }
+    }
+
+    // Door Shake Animation
+    function shakeDoor() {
+      let container = document.querySelector(".game-container");
+      container.classList.add("door-animation");
+      setTimeout(() => container.classList.remove("door-animation"), 500);
+    }
+  </script>
+</body>
+</html>
